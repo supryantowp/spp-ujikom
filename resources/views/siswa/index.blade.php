@@ -62,7 +62,29 @@
         <script>
             $(document).ready(function () {
                 $("#kelas").select2()
+
+                $(document).on('click', '.btn-delete', function (e) {
+                    e.preventDefault();
+                    let deleteForm = this.parentElement
+                    Swal.fire({
+                        animation: false,
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: "#58db83",
+                        cancelButtonColor: "#ec536c",
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.value) {
+                            deleteForm.submit()
+                        }
+                    })
+                })
             })
+
+
+
         </script>
 
     @endsection
