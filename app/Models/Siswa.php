@@ -12,4 +12,8 @@ class Siswa extends Model
     protected $table = 'siswa';
 
     protected $fillable = ['id_kelas', 'nama', 'nisn', 'nis', 'alamat', 'no_telp'];
+
+    public function kelas() {
+        return $this->belongsTo(Kelas::class, 'id_kelas');
+    }
 }

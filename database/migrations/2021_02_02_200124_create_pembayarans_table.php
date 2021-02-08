@@ -17,7 +17,7 @@ class CreatePembayaransTable extends Migration
             $table->id();
             $table->foreignId('id_spp')->constrained('spp');
             $table->foreignId('id_user')->constrained('users');
-            $table->foreignId('nisn')->constrained('siswa', 'nisn')->cascadeOnDelete();
+            $table->foreignId('nisn')->constrained('siswa', 'nisn')->cascadeOnUpdate();
             $table->string('spp_bulan');
             $table->integer('jumlah_bayar');
             $table->timestamps();

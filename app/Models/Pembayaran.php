@@ -20,4 +20,9 @@ class Pembayaran extends Model
     {
         return $this->belongsTo(Spp::class, 'id_spp');
     }
+
+    public function getJumlahIdrAttribute()
+    {
+        return 'RP. '.format_idr($this->jumlah_bayar);
+    }
 }

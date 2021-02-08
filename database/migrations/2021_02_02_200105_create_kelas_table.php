@@ -16,7 +16,7 @@ class CreateKelasTable extends Migration
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kelas');
-            $table->string('kompetensi_keahlian');
+            $table->string('kompetensi_keahlian')->nullable();
             $table->timestamps();
         });
     }

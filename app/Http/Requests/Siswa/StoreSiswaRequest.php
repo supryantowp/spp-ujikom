@@ -26,10 +26,10 @@ class StoreSiswaRequest extends FormRequest
         return [
             'id_kelas' => 'required',
             'nama' => 'required',
-            'nisn' => 'required|unique:siswa',
-            'nis' => 'required|unique:siswa',
+            'nisn' => 'required|max:12|unique:siswa',
+            'nis' => 'required|max:12|unique:siswa',
             'alamat' => 'required',
-            'no_telp' => 'required|integer'
+            'no_telp' => 'required'
         ];
     }
 }

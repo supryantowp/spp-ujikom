@@ -43,4 +43,10 @@ class ApiController extends Controller
             return response()->json(['msg' => $e->getMessage()]);
         }
     }
+
+    public function getHistoriSppByNisn(Request $request)
+    {
+
+    }
+
 }

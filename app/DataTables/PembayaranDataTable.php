@@ -20,9 +20,18 @@ class PembayaranDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        $data = PembayaranResource::collection(Pembayaran::with('siswa')->get());
+        $model = Pembayaran::with('spp');
         return datatables()
-            ->collection(collect($data));
+            ->eloquent($model)
+            ->addColumn('siswa', function(Pembayaran $pembayaran) {
+                return $pembayaran->siswa->nama;
+            })
+            ->addColumn('jumlah_bayar', function (Pembayaran $pembayaran) {
+                return $pembayaran->jumlahIdr;
+            })
+            ->addColumn('tanggal_dibayar', function (Pembayaran $pembayaran) {
+                return $pembayaran->created_at->format('d M Y');
+            });
     }
 
     /**

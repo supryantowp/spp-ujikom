@@ -116,6 +116,7 @@
                         url: "/api/spp",
                         success: function (result) {
                             if (result.length === 0) {
+                                alert('spp tidak ada')
                                 $("#spp").append('<option>SPP tidak tersedia</option>')
                             }
                             $("#spp").empty()

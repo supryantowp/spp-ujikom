@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Models\Kelas;
 use App\Models\Siswa;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -17,9 +18,13 @@ class SiswaDataTable extends DataTable
      */
     public function dataTable($query)
     {
+        $model = Siswa::with('kelas');
         return datatables()
-            ->eloquent($query)
-            ->addColumn('action', 'components.action-button');
+            ->eloquent($model)
+            ->addColumn('kelas', function (Siswa $siswa) {
+                return  $siswa->kelas->nama_kelas .' - ' . $siswa->kelas->kompetensi_keahlian;
+            })
+            ->addColumn('action', 'components.action-siswa');
     }
 
     /**
@@ -61,8 +66,8 @@ class SiswaDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('id'),
             Column::make('nama'),
+            Column::make('kelas'),
             Column::make('nisn'),
             Column::make('nis'),
             Column::make('alamat'),

@@ -20,15 +20,27 @@ Route::get('/', function () {
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('/transaksi-spp', \App\Http\Controllers\TransaksiSpp::class);
     Route::get('/history-spp', [\App\Http\Controllers\HistorySppController::class, 'index'])->name('history-spp.index');
 
-    Route::resource('/siswa', \App\Http\Controllers\SiswaController::class);
-    Route::resource('/kelas', \App\Http\Controllers\KelasController::class);
+    Route::middleware('role:admin')->group(function () {
+        Route::resources([
+            '/spp' => \App\Http\Controllers\SppController::class,
+            '/transaksi-spp' => \App\Http\Controllers\TransaksiSpp::class,
+            '/siswa' => \App\Http\Controllers\SiswaController::class,
+            '/kelas' => \App\Http\Controllers\KelasController::class,
+            '/users' => \App\Http\Controllers\UserController::class,
+            '/roles' => \App\Http\Controllers\RoleController::class,
+        ]);
+    });
+
+
+    Route::get('/siswa-import', [\App\Http\Controllers\SiswaController::class, 'import'])->name('siswa.import');
+    Route::post('/siswa-import', [\App\Http\Controllers\SiswaController::class, 'storeImport'])->name('siswa.storeImport');
 
 });
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('/spp', [\App\Http\Controllers\ApiController::class, 'getSpp'])->name('spp.list');
     Route::post('/spp/{nisn}', [\App\Http\Controllers\ApiController::class, 'storeSpp']);
+    Route::get('/histori-spp/{nisn}', [\App\Http\Controllers\ApiController::class, 'getHistoriSppByNisn']);
 });

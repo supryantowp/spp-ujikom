@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\KelasDataTable;
+use App\Http\Requests\StoreKelasRequest;
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 
 class KelasController extends Controller
@@ -11,9 +14,9 @@ class KelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(KelasDataTable $dataTable)
     {
-        //
+        return $dataTable->render('kelas.index');
     }
 
     /**
@@ -23,7 +26,7 @@ class KelasController extends Controller
      */
     public function create()
     {
-        //
+        return view('kelas.add');
     }
 
     /**
@@ -32,9 +35,16 @@ class KelasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreKelasRequest $request)
     {
-        //
+        try {
+            Kelas::create($request->validated());
+            alert()->success('Kelas berhasil disimpan ke database');
+        } catch (\Exception $exception) {
+            alert()->error($exception->getMessage());
+        }
+
+        return redirect()->route('kelas.index');
     }
 
     /**
@@ -56,7 +66,8 @@ class KelasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $kelas = Kelas::findOrfail($id);
+        return view('kelas.edit', compact('kelas'));
     }
 
     /**
@@ -66,9 +77,15 @@ class KelasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreKelasRequest $request, $id)
     {
-        //
+        try {
+            Kelas::findOrFail($id)->update($request->validated());
+            alert()->success('Kelas berhasil disimpan ke database');
+        } catch (\Exception $exception) {
+            alert()->error($exception->getMessage());
+        }
+        return redirect()->route('kelas.index');
     }
 
     /**
@@ -79,6 +96,12 @@ class KelasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            Kelas::findOrFail($id)->delete();
+            alert()->success('Kelas berhasil dihapus');
+        } catch (\Exception $exception) {
+            alert()->error($exception->getMessage());
+        }
+        return redirect()->route('kelas.index');
     }
 }

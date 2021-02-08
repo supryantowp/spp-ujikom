@@ -24,7 +24,10 @@
                                 <li class="breadcrumb-item active">Siswa</li>
                             </ol>
                         </div>
-                        <a href="{{route('siswa.create')}}" class="btn btn-primary">Tambah Siswa</a>
+                        <div>
+                            <a href="{{route('siswa.create')}}" class="btn btn-primary">Tambah Siswa</a>
+                            <a href="{{route('siswa.import')}}" class="btn btn-outline-primary">Import Siswa</a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -67,14 +70,13 @@
                     e.preventDefault();
                     let deleteForm = this.parentElement
                     Swal.fire({
-                        animation: false,
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
+                        title: 'Apakah kamu yakin?',
+                        text: "Anda tidak akan dapat mengembalikan ini!",
                         type: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: "#58db83",
                         cancelButtonColor: "#ec536c",
-                        confirmButtonText: 'Yes, delete it!'
+                        confirmButtonText: 'Ya, hapus!'
                     }).then((result) => {
                         if (result.value) {
                             deleteForm.submit()
@@ -82,7 +84,6 @@
                     })
                 })
             })
-
 
 
         </script>
