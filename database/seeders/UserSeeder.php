@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,10 +15,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $data = [
-            ['name' => 'admin', 'email' => 'admin@gmail.com', 'password' => bcrypt('admin12345')]
-        ];
+        $admin = User::create(['name' => 'admin', 'email' => 'admin@espp.com', 'password' => bcrypt('admin12345')]);
+        $admin->assignRole('admin');
 
-        DB::table('users')->insert($data);
+        $petugas = User::create(['name' => 'petugas', 'email' => 'petugas@espp.com', 'password' => bcrypt
+        ('admin12345')]);
+        $petugas->assignRole('petugas');
+
     }
 }

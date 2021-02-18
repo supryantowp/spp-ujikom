@@ -16,19 +16,24 @@ class DashboardController extends Controller
         $totTransaksi = Pembayaran::count();
         $totSiswa = Siswa::count();
         $totKelas = Kelas::count();
+
         $search = $request->search;
+        $pembayarans = $search !== null ? $this->getSearchValue($search) : [];
 
-        if($search !== null) {
-            $pembayarans = Pembayaran::whereHas('siswa', function ($query) use ($search) {
-                $query->where('nama', 'ilike', '%'.$search.'%');
-            })
-            ->with('siswa', function ($query) use ($search) {
-                $query->where('nama', 'ilike', '%'.$search.'%');
-            })->get();
-        } else {
-            $pembayarans = [];
-        }
+        $transaskiSiswa = Pembayaran::where('nisn', auth()->user()->nisn)->get();
 
-        return view('dashboard', compact('totUang', 'totTransaksi', 'totSiswa', 'totKelas', 'pembayarans'));
+        return view('dashboard', compact('totUang', 'totTransaksi', 'totSiswa', 'totKelas', 'pembayarans', 'transaskiSiswa'));
     }
+
+    protected function getSearchValue($search)
+    {
+        return Pembayaran::whereHas('siswa', function ($query) use ($search) {
+            $query->where('nama', 'ilike', '%' . $search . '%');
+        })
+            ->with('siswa', function ($query) use ($search) {
+                $query->where('nama', 'ilike', '%' . $search . '%');
+            })->get();
+    }
+
+
 }

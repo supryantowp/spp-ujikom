@@ -16,7 +16,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title mt-0 mb-3">
-                                Form tambah SPp
+                                Form tambah SPP
                             </h4>
 
                             <form action="{{route('spp.store')}}" method="post">
@@ -26,17 +26,17 @@
                                     <div class="col-sm-10">
                                         <input type="text" name="tahun" class="form-control @error('tahun')
                                             is-invalid
-                                        @enderror"  value="{{old('tahun')}}">
-                                        <x-input-error for="tahun" />
+                                        @enderror" value="{{old('tahun')}}">
+                                        <x-input-error for="tahun"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="nominal" class="col-sm-2 col-form-label">Nominal</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="nominal"
+                                        <input type="text" name="nominal" rel="nominal"
                                                class="form-control @error ('nominal') is-invalid @enderror"
                                                value="{{old('nominal')}}">
-                                        <x-input-error for="nominal" />
+                                        <x-input-error for="nominal"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -52,5 +52,25 @@
             </div>
         </div>
     </div>
+
+    @section('script')
+        <script>
+            $(document).ready(function () {
+                $("input[rel=nominal]").bind('keyup', function () {
+                    let awal = 0;
+                    $("input[rel=nominal]").each(function () {
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                        if (this.value != '') awal += parseInt(this.value, 10);
+                    });
+
+                    $("input[rel=nominal]").each(function () {
+                        this.value = this.value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+                    });
+
+                })
+            })
+        </script>
+
+    @endsection
 
 </x-app-layout>

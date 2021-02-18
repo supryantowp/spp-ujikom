@@ -1,15 +1,5 @@
 <x-app-layout>
 
-    @section('css')
-        <link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"
-              type="text/css"/>
-        <link href="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet"
-              type="text/css"/>
-        <!-- Responsive datatable examples -->
-        <link href="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet"
-              type="text/css"/>
-    @endsection
-
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -25,72 +15,65 @@
     </div>
     <div class="container">
         @role('admin|petugas')
-            @include('components.card-widget')
-            @include('components.search-transaksi')
+        @include('components.card-widget')
+        @include('components.search-transaksi')
         @endrole
 
         @role('siswa')
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="header-title mt-0 mb-3">Histori Transaksi Anda</h4>
-                            <table id="data-table" class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>SPP</th>
-                                    <th>TOTAL</th>
-                                    <th>TANGGAL</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h4 class="header-title">Histori Transaksi Anda</h4>
+                        <div>
+                            <a href="{{route('transaksi-by-siswa.export')}}" class="btn btn-primary" download="true"
+                            >Export</a>
+                            <button class="btn btn-primary">Cetak</button>
                         </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered datatable">
+                            <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>TANGGAL</th>
+                                <th>SPP</th>
+                                <th>BULAN DIBAYAR</th>
+                                <th>JUMLAH DIBAYAR</th>
+                                <th>PILIHAN</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($transaskiSiswa as $transaski)
+                                <tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$transaski->created_at->format('Y-m-d')}}</td>
+                                    <td>{{$transaski->spp->tahun . ' | ' . $transaski->spp->nominalIdr}}</td>
+                                    <td>{{$transaski->spp_bulan}}</td>
+                                    <td>{{$transaski->jumlahIdr}}</td>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+        </div>
         @endrole
     </div>
 
-        @section('script')
-            <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-            <!-- Buttons examples -->
-            <script src="{{ asset('assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/jszip.min.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/pdfmake.min.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/vfs_fonts.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/buttons.html5.min.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/buttons.print.min.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/buttons.colVis.min.js')}}"></script>
-            <!-- Responsive examples -->
-            <script src="{{ asset('assets/plugins/datatables/dataTables.responsive.min.js')}}"></script>
-            <script src="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
+    @section('script')
+        @include('layouts.datatable')
 
-
-            @role('siswa')
-            <script>
-                $(document).ready(function () {
-                    $("#data-table").DataTable({
-                        buttons: [
-                            'excel', 'pdf'
-                        ],
-                        processiong: true,
-                        serverSide: true,
-                        ajax: "/api/history-spp/{{auth()->user()->nisn}}",
-                        columns: [
-                            {data: 'spp', name: 'spp'},
-                            {data: 'total', name: 'total'},
-                            {data: 'tanggal', name:'tanggal'}
-                        ],
-                    })
-                })
-            </script>
-            @endrole
-        @endsection
+        <script>
+            $(document).ready(function () {
+                $(".datatable").dataTable()
+            })
+        </script>
+    @endsection
 
 </x-app-layout>
 

@@ -27,49 +27,62 @@
                     <div class="card-body">
                         <h4 class="header-title mt-0 mb-3">Siswa</h4>
 
-                        <div class="form-group row">
-                            <label for="nama" class="col-sm-2 col-form-label">Nama</label>
-                            <div class="col-sm-10">
-                                <input readonly class="form-control-plaintext form-inline" type="text"
-                                       value="{{$siswa->nama}}">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
-                            <div class="col-sm-10">
-                                <input readonly class="form-control-plaintext form-inline" type="text"
-                                       value="{{$siswa->kelas->nama_kelas. ' - ' .
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <div class="form-group row">
+                                    <label for="nama" class="col-sm-4 col-form-label">Nama</label>
+                                    <div class="col-sm-8">
+                                        <input readonly class="form-control-plaintext form-inline" type="text"
+                                               value="{{$siswa->nama}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="kelas" class="col-sm-4 col-form-label">Kelas</label>
+                                    <div class="col-sm-8">
+                                        <input readonly class="form-control-plaintext form-inline" type="text"
+                                               value="{{$siswa->kelas->nama_kelas. ' - ' .
                                        $siswa->kelas->kompetensi_keahlian}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="nisn" class="col-sm-4 col-form-label">Nisn</label>
+                                    <div class="col-sm-8">
+                                        <input readonly class="form-control-plaintext form-inline" type="text"
+                                               value="{{$siswa->nisn}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="nis" class="col-sm-4 col-form-label">Nis</label>
+                                    <div class="col-sm-8">
+                                        <input readonly class="form-control-plaintext form-inline" type="text"
+                                               value="{{$siswa->nis}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <div class="form-group row">
+                                    <label for="alamat" class="col-sm-4 col-form-label">Alamat</label>
+                                    <div class="col-sm-8">
+                                        <input readonly class="form-control-plaintext form-inline" type="text"
+                                               value="{{$siswa->alamat}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="no_telp" class="col-sm-4 col-form-label">No Telepon</label>
+                                    <div class="col-sm-8">
+                                        <input readonly class="form-control-plaintext form-inline" type="text"
+                                               value="{{$siswa->no_telp}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="no_telp" class="col-sm-4 col-form-label">Total Transaksi</label>
+                                    <div class="col-sm-8">
+                                        <strong>RP. {{format_idr($siswa->transaksi->sum('jumlah_bayar'))}}</strong>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="nisn" class="col-sm-2 col-form-label">Nisn</label>
-                            <div class="col-sm-10">
-                                <input readonly class="form-control-plaintext form-inline" type="text"
-                                       value="{{$siswa->nisn}}">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="nis" class="col-sm-2 col-form-label">Nis</label>
-                            <div class="col-sm-10">
-                                <input readonly class="form-control-plaintext form-inline" type="text"
-                                       value="{{$siswa->nis}}">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
-                            <div class="col-sm-10">
-                                <input readonly class="form-control-plaintext form-inline" type="text"
-                                       value="{{$siswa->alamat}}">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="no_telp" class="col-sm-2 col-form-label">No Telepon</label>
-                            <div class="col-sm-10">
-                                <input readonly class="form-control-plaintext form-inline" type="text"
-                                       value="{{$siswa->no_telp}}">
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -82,6 +95,7 @@
                             <thead>
                             <tr>
                                 <th>SPP</th>
+                                <th>BULAN DIBAYAR</th>
                                 <th>TOTAL</th>
                                 <th>TANGGAL</th>
                             </tr>
@@ -124,6 +138,7 @@
                     ajax: "{{route('siswa.show', ['siswa' => $siswa->id])}}",
                     columns: [
                         {data: 'spp', name: 'spp'},
+                        {data: 'bulan_dibayar', name: 'bulan_dibayar'},
                         {data: 'total', name: 'total'},
                         {data: 'tanggal', name:'tanggal'}
                     ],

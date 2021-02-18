@@ -52,7 +52,7 @@ class SiswaController extends Controller
             $siswa = Siswa::create($request->validated());
             $user = User::create([
                 'name' => $siswa->nama,
-                'email' => $siswa->nisn.'@gmail.com',
+                'email' => $siswa->nis.'@gmail.com',
                 'password' => Hash::make(123456789),
                 'nisn' => $siswa->nisn
             ]);
@@ -80,6 +80,9 @@ class SiswaController extends Controller
             return DataTables::of($data)
                 ->addColumn('spp', function($row) {
                     return $row->spp->tahun;
+                })
+                ->addColumn('bulan_dibayar', function ($row) {
+                    return $row->spp_bulan;
                 })
                 ->addColumn('total', function($row) {
                     return $row->jumlahIdr;
@@ -122,7 +125,7 @@ class SiswaController extends Controller
             $user = User::where('nisn', $request->old_nisn)->first();
             $user->update([
                 'name' => $siswa->nama,
-                'email' => $siswa->nisn.'@gmail.com',
+                'email' => $siswa->nis.'@gmail.com',
                 'password' => Hash::make(123456789),
                 'nisn' => $siswa->nisn
             ]);

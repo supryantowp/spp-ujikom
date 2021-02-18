@@ -37,7 +37,7 @@ class SiswaImport implements ToCollection
 
                 $user = User::create([
                     'name' => $siswa->nama,
-                    'email' => $siswa->nisn.'@gmail.com',
+                    'email' => $siswa->nis.'@gmail.com',
                     'password' => Hash::make(123456789),
                     'nisn' => $siswa->nisn
                 ]);

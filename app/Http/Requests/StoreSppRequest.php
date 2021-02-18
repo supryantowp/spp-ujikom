@@ -25,7 +25,7 @@ class StoreSppRequest extends FormRequest
     {
         return [
             'tahun' => 'required|numeric',
-            'nominal' => 'required|numeric'
+            'nominal' => 'required'
         ];
     }
 }

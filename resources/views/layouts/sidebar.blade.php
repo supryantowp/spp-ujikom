@@ -16,9 +16,8 @@
                                 class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
                         </span></a>
                     <ul class="submenu">
-                        <li><a href="{{route('spp.index')}}">Setting</a></li>
                         <li><a href="{{route('transaksi-spp.index')}}">Entry Transaksi</a></li>
-                        <li><a href="{{route('history-spp.index')}}">History Transaksi</a></li>
+                        <li><a href="{{route('pelunasan-spp.index')}}">Pelunasan Transaksi</a></li>
                     </ul>
                 </li>
                 <li>

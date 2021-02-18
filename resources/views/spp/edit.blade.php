@@ -4,11 +4,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Tambah Spp</h4>
+                        <h4 class="page-title">Edit Spp</h4>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('kelas.index')}}">Spp</a></li>
-                            <li class="breadcrumb-item active">Tambah</li>
+                            <li class="breadcrumb-item"><a href="{{route('spp.index')}}">Spp</a></li>
+                            <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </div>
                 </div>
@@ -16,7 +16,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title mt-0 mb-3">
-                                Form tambah kelas
+                                Form tambah spp
                             </h4>
 
                             <form action="{{route('spp.update', ['spp' => $spp->id])}}" method="post">
@@ -32,9 +32,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="nominal" class="col-sm-2 col-form-label">Kompetensi Keahlian</label>
+                                    <label for="nominal" class="col-sm-2 col-form-label">nominal</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="nominal"
+                                        <input type="text" name="nominal" rel="nominal"
                                                class="form-control @error ('nominal') is-invalid @enderror"
                                                value="{{$spp->nominal}}">
                                         <x-input-error for="nominal" />
@@ -54,4 +54,23 @@
         </div>
     </div>
 
+    @section('script')
+        <script>
+            $(document).ready(function () {
+                $("input[rel=nominal]").bind('keyup', function () {
+                    let awal = 0;
+                    $("input[rel=nominal]").each(function () {
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                        if (this.value != '') awal += parseInt(this.value, 10);
+                    });
+
+                    $("input[rel=nominal]").each(function () {
+                        this.value = this.value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+                    });
+
+                })
+            })
+        </script>
+
+    @endsection
 </x-app-layout>

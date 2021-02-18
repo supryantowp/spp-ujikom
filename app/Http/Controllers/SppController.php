@@ -37,8 +37,10 @@ class SppController extends Controller
      */
     public function store(StoreSppRequest $request)
     {
+        $input = $request->validated();
+        $input['nominal'] = preg_replace("/[,.]/", "", $request->nominal);
         try {
-            Spp::create($request->validated());
+            Spp::create($input);
             alert()->success('Spp berhasil disimpan ke database');
         } catch (\Exception $exception) {
             alert()->error($exception->getMessage());
@@ -78,8 +80,10 @@ class SppController extends Controller
      */
     public function update(StoreSppRequest $request, $id)
     {
+        $input = $request->validated();
+        $input['nominal'] = preg_replace("/[,.]/", "", $request->nominal);
         try {
-            Spp::findOrFail($id)->update($request->validated());
+            Spp::findOrFail($id)->update($input);
             alert()->success('Spp berhasil disimpan ke database');
         } catch (\Exception $exception) {
             alert()->error($exception->getMessage());
