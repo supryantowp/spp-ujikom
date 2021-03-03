@@ -52,7 +52,7 @@ class SiswaController extends Controller
             $siswa = Siswa::create($request->validated());
             $user = User::create([
                 'name' => $siswa->nama,
-                'email' => $siswa->nis.'@gmail.com',
+                'email' => $siswa->nis . '@gmail.com',
                 'password' => Hash::make(123456789),
                 'nisn' => $siswa->nisn
             ]);
@@ -72,29 +72,11 @@ class SiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
         $siswa = Siswa::findOrFail($id);
-        if($request->ajax()) {
-            $data = Pembayaran::where('nisn', $siswa->nisn)->get();
-            return DataTables::of($data)
-                ->addColumn('spp', function($row) {
-                    return $row->spp->tahun;
-                })
-                ->addColumn('bulan_dibayar', function ($row) {
-                    return $row->spp_bulan;
-                })
-                ->addColumn('total', function($row) {
-                    return $row->jumlahIdr;
-                })
-                ->addColumn('tanggal', function ($row) {
-                    return $row->created_at->format('d M Y');
-                })
-                ->make(true);
-        }
-
-
-        return view('siswa.show', compact('siswa'));
+        $historys = Pembayaran::where('nisn', $siswa->nisn)->get();
+        return view('siswa.show', compact('siswa', 'historys'));
     }
 
     /**
@@ -125,7 +107,7 @@ class SiswaController extends Controller
             $user = User::where('nisn', $request->old_nisn)->first();
             $user->update([
                 'name' => $siswa->nama,
-                'email' => $siswa->nis.'@gmail.com',
+                'email' => $siswa->nis . '@gmail.com',
                 'password' => Hash::make(123456789),
                 'nisn' => $siswa->nisn
             ]);
@@ -149,7 +131,7 @@ class SiswaController extends Controller
             Siswa::findOrFail($id)->delete();
             alert()->success('Siswa berhasil dihapus');
         } catch (\Exception $exception) {
-            alert()->error($exception->getMessage());
+            alert()->error("error");
         }
         return redirect()->route('siswa.index');
     }
@@ -169,7 +151,7 @@ class SiswaController extends Controller
             $extensions = ['xls', 'xlsx', 'xlm', 'xla', 'xlc', 'xlt', 'xlw'];
             $result = [$request->file('file')->getClientOriginalExtension()];
 
-            if(in_array($result[0], $extensions)) {
+            if (in_array($result[0], $extensions)) {
                 Excel::import(new SiswaImport, $request->file('file'));
                 return redirect()->route('siswa.index')->with('success', 'berhasil ditambahkan ke database');
             }
@@ -178,6 +160,37 @@ class SiswaController extends Controller
         }
 
         return redirect()->route('siswa.index')->with('errors', 'terjadi kesalahan : no file');
+    }
 
+    public function transaksiPrint(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+        $total = 0;
+        $transaksi = Pembayaran::whereIn('id', $ids)->get();
+        foreach ($transaksi as $trans) {
+            $total += $trans->jumlah_bayar;
+        }
+
+        return view('siswa.transaksi-print', compact('transaksi', 'total'));
+    }
+
+    public function chartSiswa(Request $request)
+    {
+        $transaksi = Pembayaran::where('nisn', $request->nisn)->get();
+        $year = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //initialize all months to 0
+
+        foreach ($transaksi as $trans) {
+            $year[$trans->created_at->month - 1] = $trans->jumlahIdr;
+        }
+
+        return response()->json($year);
+    }
+
+    public function detailTransaksi(Request $request, $id, $id_transaksi)
+    {
+        $siswa = Siswa::findOrFail($id);
+        $transaksi = Pembayaran::with('bulans')->findOrFail($id_transaksi);
+
+        return view('siswa.transaksi', compact('transaksi', 'siswa'));
     }
 }

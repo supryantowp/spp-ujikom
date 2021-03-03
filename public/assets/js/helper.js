@@ -1,3 +1,13 @@
+function reloadPage(url, time = 2000) {
+    setTimeout(() => {
+        if (url) {
+            window.location.href = `${window.location.origin}/${url}`
+        } else {
+            window.location.reload()
+        }
+    }, time)
+}
+
 function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
@@ -7,9 +17,26 @@ function removeFormat(num) {
 }
 
 function formatDate(date) {
-    return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
+    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
 }
 
-$(".select2").select2({
-    placeholder: 'Silahkan pilih'
-});
+function deleteData() {
+    $(document).on('click', '.btn-delete', function (e) {
+        e.preventDefault();
+        let deleteForm = this.parentElement
+        Swal.fire({
+            title: 'Apakah kamu yakin?',
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#58db83",
+            cancelButtonColor: "#ec536c",
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.value) {
+                deleteForm.submit()
+            }
+        })
+    })
+
+}

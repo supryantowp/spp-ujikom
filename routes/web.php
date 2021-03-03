@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,11 +31,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
             '/kelas' => \App\Http\Controllers\KelasController::class,
             '/users' => \App\Http\Controllers\UserController::class,
             '/roles' => \App\Http\Controllers\RoleController::class,
+            '/lokets' => \App\Http\Controllers\LoketController::class
         ]);
 
         Route::get('pelunasan-spp', [\App\Http\Controllers\TransaksiSppController::class, 'pelunasan'])->name('pelunasan-spp.index');
     });
 
+    Route::get('/siswa/{id}/transaksi/{id_transaksi}', [\App\Http\Controllers\SiswaController::class, 'detailTransaksi'])->name('siswa.detail-transaksi');
     Route::get('/siswa-import', [\App\Http\Controllers\SiswaController::class, 'import'])->name('siswa.import');
     Route::post('/siswa-import', [\App\Http\Controllers\SiswaController::class, 'storeImport'])->name('siswa.storeImport');
 });
@@ -42,4 +45,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'api'], function () {
     Route::get('/spp', [\App\Http\Controllers\ApiController::class, 'getSpp'])->name('spp.list');
     Route::post('/spp/{nisn}', [\App\Http\Controllers\ApiController::class, 'storeSpp']);
+
+    Route::post('/siswa/transaksi/print', [\App\Http\Controllers\SiswaController::class, 'transaksiPrint']);
+
+    Route::get('/siswa/chart/{nisn}', [\App\Http\Controllers\SiswaController::class, 'chartSiswa']);
+});
+
+Route::get('antriant-client/{any}', function () {
+    return view('layouts.antrian');
 });

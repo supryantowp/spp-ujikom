@@ -27,6 +27,11 @@ class Pembayaran extends Model
         return $this->belongsTo(Spp::class, 'id_spp');
     }
 
+    public function bulans()
+    {
+        return $this->hasMany(PembayaranBulan::class, 'id_pembayaran');
+    }
+
     public static function generateCode()
     {
         $now = Carbon::now();
@@ -34,12 +39,12 @@ class Pembayaran extends Model
 
         $number = $array ? substr($array->id, -4) + 1 : 0001;
 
-        return 'SPP-'. $now->isoFormat('YYYY') . $now->isoFormat('MM') . '-' . sprintf('%04d', $number);
+        return 'SPP-' . $now->isoFormat('YYYY') . $now->isoFormat('MM') . '-' . sprintf('%04d', $number);
     }
 
     public function getJumlahIdrAttribute()
     {
-        return 'RP. '.format_idr($this->jumlah_bayar);
+        return 'RP. ' . format_idr($this->jumlah_bayar);
     }
 
     public static function boot()

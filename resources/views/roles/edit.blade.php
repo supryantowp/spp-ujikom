@@ -4,11 +4,13 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Tambah Role</h4>
+                        <h4 class="page-title">Update Role</h4>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('roles.index')}}">Role</a></li>
-                            <li class="breadcrumb-item active">Tambah</li>
+                            <li class="breadcrumb-item"><a
+                                    href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Role</a>
+                            </li>
+                            <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </div>
                 </div>
@@ -16,19 +18,18 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title mt-0 mb-3">
-                                Form tambah role
+                                Form edit role
                             </h4>
 
-                            <form action="{{route('roles.update', ['role' => $role->id])}}" method="post">
+                            <form
+                                action="{{ route('roles.update', ['role' => $role->id]) }}"
+                                method="post">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group row">
                                     <label for="nama" class="col-sm-2 col-form-label">Nama</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="name" class="form-control @error('name')
-                                            is-invalid
-                                        @enderror"  value="{{$role->name}}">
-                                        <x-input-error for="name" />
+                                        <input type="text" name="name" class="form-control" value="{{ $role->name }}">
                                     </div>
                                 </div>
                                 <div class="row">

@@ -19,7 +19,6 @@ class CreatePembayaransTable extends Migration
             $table->foreignId('id_user')->constrained('users');
             $table->string('pembayaran_code')->nullable();
             $table->foreignId('nisn')->constrained('siswa', 'nisn')->cascadeOnUpdate();
-            $table->string('spp_bulan');
             $table->bigInteger('jumlah_bayar');
             $table->bigInteger('dibayar');
             $table->bigInteger('sisa_bayar');

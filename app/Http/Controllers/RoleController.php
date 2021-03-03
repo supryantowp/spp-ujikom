@@ -13,9 +13,10 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(RolesDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render('roles.index');
+        $roles = Role::orderBy('name', 'ASC')->get();
+        return view('roles.index', compact('roles'));
     }
 
     /**
@@ -42,7 +43,7 @@ class RoleController extends Controller
 
         try {
             Role::create($request->all());
-            alert()->success('Kelas berhasil disimpan ke database');
+            alert()->success('Role berhasil disimpan ke database');
         } catch (\Exception $exception) {
             alert()->error($exception->getMessage());
         }
@@ -87,7 +88,7 @@ class RoleController extends Controller
 
         try {
             Role::findOrFail($id)->update($request->all());
-            alert()->success('Kelas berhasil disimpan ke database');
+            alert()->success('Role berhasil disimpan ke database');
         } catch (\Exception $exception) {
             alert()->error($exception->getMessage());
         }

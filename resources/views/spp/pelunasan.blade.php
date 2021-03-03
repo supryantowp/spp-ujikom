@@ -1,8 +1,8 @@
 <x-app-layout>
 
     @section('css')
-    <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
-    <link href="{{ asset('assets/plugins/sweet-alert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
+        <link href="{{ asset('assets/plugins/sweet-alert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css">
     @endsection
 
     <div class="wrapper">
@@ -12,7 +12,7 @@
                     <div class="page-title-box">
                         <h4 class="page-title">Pelunasan Transaksi</h4>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Pelunasan SPP</li>
                         </ol>
                     </div>
@@ -28,8 +28,15 @@
                                         <label for="siswa">Siswa</label>
                                         <select name="siswa" id="siswa" class="form-control select2">
                                             <option value=""></option>
-                                            @foreach($siswas as $siswa)
-                                            <option value="{{$siswa->nisn}}">{{$siswa->nama}}</option>
+                                            @foreach ($kelas as $kela)
+                                                <optgroup
+                                                    label="{{ $kela->nama_kelas }} - {{ $kela->kompetensi_keahlian }}">
+                                                    @foreach ($kela->siswa as $siswa)
+                                                        <option value="{{ $siswa->nisn }}">
+                                                            {{ $siswa->nama }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
                                             @endforeach
                                         </select>
                                     </div>
@@ -90,8 +97,8 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="payment">Payment Method</label>
-                                                <select name="payment" class="select2 form-control" id="payment">
-                                                    <option value=""></option>
+                                                <select name="payment" class="form-control select2" id="payment"
+                                                    required>
                                                     <option value="cash">Cash</option>
                                                 </select>
                                             </div>
@@ -100,7 +107,7 @@
                                             <div class="form-group">
                                                 <label for="payment">Jumlah</label>
                                                 <input id="jumlah" type="text" class="form-control" name="jumlah"
-                                                    rel="jumlah">
+                                                    rel="jumlah" required>
                                             </div>
                                         </div>
                                     </div>
@@ -128,7 +135,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12 d-flex justify-content-end">
-                                    <button id="btn-bayar" class="btn btn-primary mx-1">Bayar</button>
+                                    <button type="submit" id="btn-bayar" class="btn btn-primary mx-1">Bayar</button>
                                     <button type="reset" class="btn btn-danger mx-1">Reset</button>
                                 </div>
                             </div>
@@ -141,10 +148,11 @@
     </div>
 
     @section('script')
-    <script src="{{ asset('assets/plugins/select2/js/select2.min.js')}}"></script>
-    <script src="{{ asset('assets/plugins/sweet-alert2/sweetalert2.min.js')}}"></script>
-    <script src="{{ asset('assets/js/helper.js') }}"></script>
-    <script src="{{ asset('assets/js/pelunasan.js') }}"></script>
+        <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/parsleyjs/parsley.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
+        <script src="{{ asset('assets/js/helper.js') }}"></script>
+        <script src="{{ asset('assets/js/pelunasan.js') }}"></script>
     @endsection
 
 </x-app-layout>

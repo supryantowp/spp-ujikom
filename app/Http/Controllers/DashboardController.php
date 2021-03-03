@@ -34,6 +34,4 @@ class DashboardController extends Controller
                 $query->where('nama', 'ilike', '%' . $search . '%');
             })->get();
     }
-
-
 }

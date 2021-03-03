@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\UsersDataTable;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,9 +17,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(UsersDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render('users.index');
+        $users =  User::role(['admin', 'petugas'])->orderBy('name', 'ASC')->get();
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -63,7 +63,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -75,8 +76,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrfail($id);
-        $roles = Role::pluck('name')->all();
-        $userRole = $user->roles->pluck('name')->all();
+        $roles = Role::all();
+        $userRole = $user->roles[0]->name;
         return view('users.edit', compact('user', 'roles', 'userRole'));
     }
 
@@ -91,13 +92,13 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'roles' => 'required|array'
+            'email' => 'required|email|unique:users,email,' . $id,
+            'roles' => 'required',
         ]);
 
         $input = $request->all();
 
-        if(!empty($input['password'])) {
+        if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
         } else {
             $input = Arr::except($input, array('password'));
@@ -114,7 +115,6 @@ class UserController extends Controller
             alert()->error($exception->getMessage());
         }
         return redirect()->route('users.index');
-
     }
 
     /**

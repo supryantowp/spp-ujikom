@@ -10,6 +10,10 @@ use Yajra\DataTables\Services\DataTable;
 
 class SiswaDataTable extends DataTable
 {
+    protected $exportColumns = [
+        'nama'
+    ];
+
     /**
      * Build DataTable class.
      *
@@ -22,7 +26,7 @@ class SiswaDataTable extends DataTable
         return datatables()
             ->eloquent($model)
             ->addColumn('kelas', function (Siswa $siswa) {
-                return  $siswa->kelas->nama_kelas .' - ' . $siswa->kelas->kompetensi_keahlian;
+                return  $siswa->kelas->nama_kelas . ' - ' . $siswa->kelas->kompetensi_keahlian;
             })
             ->addColumn('action', 'components.action-siswa');
     }
@@ -51,11 +55,9 @@ class SiswaDataTable extends DataTable
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(1)
-            ->buttons(
-                Button::make('csv'),
-                Button::make('excel'),
-                Button::make('pdf'),
-            );
+            ->parameters([
+                'buttons' => ['csv', 'excel', 'pdf', 'print']
+            ]);
     }
 
     /**
@@ -68,11 +70,9 @@ class SiswaDataTable extends DataTable
         return [
             Column::make('nama'),
             Column::make('kelas'),
-            Column::make('nisn'),
-            Column::make('nis'),
             Column::make('alamat'),
             Column::make('no_telp'),
-            Column::computed('action')
+            Column::make('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(200)

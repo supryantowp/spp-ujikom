@@ -10,4 +10,9 @@ class Kelas extends Model
     use HasFactory;
 
     protected $fillable = ['nama_kelas', 'kompetensi_keahlian'];
+
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class, 'id_kelas', 'id');
+    }
 }

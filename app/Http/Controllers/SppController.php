@@ -14,9 +14,10 @@ class SppController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(SppDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render('spp.index');
+        $spps = Spp::orderBy('tahun', 'ASC')->get();
+        return view('spp.index', compact('spps'));
     }
 
     /**

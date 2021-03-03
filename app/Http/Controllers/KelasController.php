@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\KelasDataTable;
 use App\Http\Requests\StoreKelasRequest;
 use App\Models\Kelas;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class KelasController extends Controller
@@ -14,9 +14,10 @@ class KelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(KelasDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render('kelas.index');
+        $kelaes = Kelas::orderBy('nama_kelas', 'ASC')->get();
+        return view('kelas.index', compact('kelaes'));
     }
 
     /**
@@ -55,7 +56,9 @@ class KelasController extends Controller
      */
     public function show($id)
     {
-        //
+        $kelas = Kelas::findOrFail($id);
+        $siswas = Siswa::where('id_kelas', $kelas->id)->get();
+        return view('kelas.show', compact('kelas', 'siswas'));
     }
 
     /**
@@ -96,11 +99,12 @@ class KelasController extends Controller
      */
     public function destroy($id)
     {
+        $kelas = Kelas::findOrFail($id);
         try {
-            Kelas::findOrFail($id)->delete();
+            $kelas->delete();
             alert()->success('Kelas berhasil dihapus');
         } catch (\Exception $exception) {
-            alert()->error($exception->getMessage());
+            alert()->error('Error');
         }
         return redirect()->route('kelas.index');
     }

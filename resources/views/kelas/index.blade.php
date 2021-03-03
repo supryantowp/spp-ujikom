@@ -1,15 +1,7 @@
 <x-app-layout>
 
     @section('css')
-        <link href="{{ asset('assets/plugins/sweet-alert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css">
-        <!-- DataTables -->
-        <link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"
-              type="text/css"/>
-        <link href="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet"
-              type="text/css"/>
-        <!-- Responsive datatable examples -->
-        <link href="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet"
-              type="text/css"/>
+        <link href="{{ asset('assets/plugins/sweet-alert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css">
     @endsection
 
     <div class="wrapper">
@@ -20,17 +12,54 @@
                         <div>
                             <h4 class="page-title">Kelas</h4>
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Kelas</li>
                             </ol>
                         </div>
-                        <a href="{{route('kelas.create')}}" class="btn btn-primary">Tambah Kelas</a>
+                        <a href="{{ route('kelas.create') }}" class="btn btn-primary">Tambah Kelas</a>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            {!! $dataTable->table() !!}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>NAMA KELAS</th>
+                                        <th>KOMPETENSI KEAHLIAN</th>
+                                        <th>PILIHAN</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($kelaes as $kelas)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $kelas->nama_kelas }}</td>
+                                            <td>{{ $kelas->kompetensi_keahlian }}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a href="{{ route('kelas.show', ['kela' => $kelas->id]) }}"
+                                                        class="btn btn-info btn-sm mx-1">
+                                                        detail
+                                                    </a>
+                                                    <a href="{{ route('kelas.edit', ['kela' => $kelas->id]) }}"
+                                                        class="btn btn-primary btn-sm mx-1">edit</a>
+                                                    <form
+                                                        action="{{ route('kelas.destroy', ['kela' => $kelas->id]) }}"
+                                                        method="post">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button
+                                                            class="btn btn-danger btn-sm mx-1 btn-delete">hapus</button>
+                                                    </form>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -39,47 +68,17 @@
     </div>
 
     @section('script')
-        <script src="{{ asset('assets/plugins/select2/js/select2.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/sweet-alert2/sweetalert2.min.js')}}"></script>
+        <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
+        <script src="{{ asset('assets/js/helper.js') }}"></script>
 
-        <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-        <!-- Buttons examples -->
-        <script src="{{ asset('assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/jszip.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/pdfmake.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/vfs_fonts.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/buttons.html5.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/buttons.print.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/buttons.colVis.min.js')}}"></script>
-        <!-- Responsive examples -->
-        <script src="{{ asset('assets/plugins/datatables/dataTables.responsive.min.js')}}"></script>
-        <script src="{{ asset('assets/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
-
-        {!! $dataTable->scripts() !!}
+        @include('layouts.datatable')
 
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
+                $('table').dataTable()
                 $("#kelas").select2()
-
-                $(document).on('click', '.btn-delete', function (e) {
-                    e.preventDefault();
-                    let deleteForm = this.parentElement
-                    Swal.fire({
-                        title: 'Apakah kamu yakin?',
-                        text: "Anda tidak akan dapat mengembalikan ini!",
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: "#58db83",
-                        cancelButtonColor: "#ec536c",
-                        confirmButtonText: 'Ya, hapus!'
-                    }).then((result) => {
-                        if (result.value) {
-                            deleteForm.submit()
-                        }
-                    })
-                })
+                deleteData()
             })
 
         </script>

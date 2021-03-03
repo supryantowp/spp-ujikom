@@ -18,7 +18,7 @@ class CreateSiswasTable extends Migration
             $table->foreignId('id_kelas')->constrained('kelas');
             $table->string('nama');
             $table->bigInteger('nisn')->unique();
-            $table->integer('nis')->unique();
+            $table->bigInteger('nis')->unique();
             $table->text('alamat');
             $table->string('no_telp');
             $table->timestamps();

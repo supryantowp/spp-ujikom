@@ -1,7 +1,7 @@
 <x-app-layout>
 
     @section('css')
-        <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
     @endsection
 
     <div class="wrapper">
@@ -9,11 +9,13 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Tambah User</h4>
+                        <h4 class="page-title">Edit Users</h4>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('users.index')}}">User</a></li>
-                            <li class="breadcrumb-item active">Tambah</li>
+                            <li class="breadcrumb-item"><a
+                                    href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Users</a>
+                            </li>
+                            <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </div>
                 </div>
@@ -21,52 +23,38 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title mt-0 mb-3">
-                                Form tambah user
+                                Form edit
                             </h4>
 
-                            <form action="{{route('users.update', ['user' => $user->id])}}" method="post"
-                                  enctype="multipart/form-data" >
+                            <form
+                                action="{{ route('users.update', ['user' => $user->id]) }}"
+                                method="post">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group row">
                                     <label for="nama" class="col-sm-2 col-form-label">Nama</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="name" class="form-control @error('name')
-                                            is-invalid
-                                        @enderror" value="{{$user->name}}">
-                                        <x-input-error for="name"/>
+                                        <input type="text" name="name" class="form-control" value="{{ $user->name }}"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="email" class="col-sm-2 col-form-label">Email</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="email"
-                                               class="form-control @error ('email') is-invalid @enderror"
-                                               value="{{$user->email}}">
-                                        <x-input-error for="email"/>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="password" class="col-sm-2 col-form-label">Password</label>
-                                    <div class="col-sm-10">
-                                        <input type="password" name="password"
-                                               class="form-control @error ('password') is-invalid @enderror"
-                                               value="">
-                                        <x-input-error for="password"/>
+                                        <input type="email" name="email" class="form-control"
+                                            value="{{ $user->email }}" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="roles" class="col-sm-2 col-form-label">Roles</label>
                                     <div class="col-sm-10">
-                                        <select name="roles[]" id="roles" class="form-control select2
-                                        select2-multiple @error('roles') is-invalid @enderror " multiple>
+                                        <select name="roles" id="roles" class="form-control select2" required>
                                             @foreach($roles as $role)
                                                 <option
-                                                    {{in_array($role, $userRole) ? "selected" : ""}}
-                                                    value="{{$role}}">{{$role}}</option>
+                                                    {{ $userRole === $role->name ? "selected" : "" }}
+                                                    value="{{ $role->name }}">{{ $role->name }}</option>
                                             @endforeach
                                         </select>
-                                        <x-input-error for="roles"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -84,12 +72,18 @@
     </div>
 
     @section('script')
-        <script src="{{ asset('assets/plugins/select2/js/select2.min.js')}}"></script>
-        <script>
-            $(document).ready(function() {
-                $(".select2").select2();
-            })
-        </script>
+    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/parsleyjs/parsley.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2({
+                placeholder: 'Silahkan pilih'
+            });
+            $("form").parsley()
+        })
+
+    </script>
     @endsection
 
 </x-app-layout>

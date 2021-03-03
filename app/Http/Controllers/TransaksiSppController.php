@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\PembayaranDataTable;
 use App\Exports\HistoriSiswa;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,20 +18,18 @@ class TransaksiSppController extends Controller
      */
     public function index()
     {
-        $siswas = Siswa::all();
-        return view('spp.entry', compact('siswas'));
+        $kelas = Kelas::with('siswa')->get();
+        return view('spp.entry', compact('kelas'));
     }
 
     public function pelunasan()
     {
-        $siswas = Siswa::all();
-        return view('spp.pelunasan', compact('siswas'));
+        $kelas = Kelas::with('siswa')->get();
+        return view('spp.pelunasan', compact('kelas'));
     }
 
     public function exportHistoriTransaksi()
     {
-        return Excel::download(new HistoriSiswa, 'histori-'.now().'.xlsx');
+        return Excel::download(new HistoriSiswa, 'histori-' . now() . '.xlsx');
     }
-
-
 }
